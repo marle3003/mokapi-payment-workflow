@@ -26,17 +26,17 @@ async order status update.
 
 ## Getting started
 
-\`\`\`bash
+```bash
 git clone https://github.com/marle3003/mokapi-payment-workflow
 cd mokapi-payment-workflow
 docker compose up
-\`\`\`
+```
 
 Then run the Playwright tests:
 
-\`\`\`bash
+```bash
 BASE_URL=http://localhost:3000 npx playwright test
-\`\`\`
+```
 
 ## Read more
 
