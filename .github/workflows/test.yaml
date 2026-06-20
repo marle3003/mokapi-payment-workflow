@@ -44,7 +44,7 @@ jobs:
 
       - name: Save docker-compose logs
         if: ${{ !cancelled() }}
-        run: docker-compose mokapi > /var/tmp/logs.txt 2>&1
+        run: docker compose logs > /var/tmp/logs.txt 2>&1
 
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
