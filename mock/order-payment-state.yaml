@@ -1,0 +1,79 @@
+asyncapi: '3.0.0'
+info:
+  title: Order Payment State
+  version: '1.0'
+  description: >
+    Kafka topic for order payment state updates. The payment app produces a
+    message when a customer completes the payment form. The shop backend
+    consumes these messages to update the order status in the database.
+
+defaultContentType: application/json
+
+servers:
+  kafka:
+    host: localhost:9092
+    protocol: kafka
+
+channels:
+  order-payment-state:
+    address: order-payment-state
+    description: >
+      Receives payment state updates for orders. The message key is the orderId
+      so all state updates for the same order land on the same partition.
+    bindings:
+      kafka:
+        partitions: 3
+        replicas: 1
+    messages:
+      paymentState:
+        $ref: '#/components/messages/paymentState'
+
+operations:
+  publishPaymentState:
+    action: send
+    channel:
+      $ref: '#/channels/order-payment-state'
+    summary: Payment app produces a payment state update
+    messages:
+      - $ref: '#/components/messages/paymentState'
+
+  consumePaymentState:
+    action: receive
+    channel:
+      $ref: '#/channels/order-payment-state'
+    summary: Shop backend consumes payment state updates
+    messages:
+      - $ref: '#/components/messages/paymentState'
+
+components:
+  messages:
+    paymentState:
+      name: paymentState
+      title: Payment State
+      summary: Payment state update for an order
+      bindings:
+        kafka:
+          key:
+            type: string
+            description: The orderId used as the message key for partition consistency
+      payload:
+        $ref: '#/components/schemas/paymentState'
+
+  schemas:
+    paymentState:
+      type: object
+      required:
+        - orderId
+        - paymentStatus
+      properties:
+        orderId:
+          type: string
+          description: The unique identifier of the order
+          example: order-abc123
+        paymentStatus:
+          type: string
+          description: The current payment state of the order
+          enum:
+            - success
+            - failed
+          example: success

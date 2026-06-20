@@ -1,0 +1,81 @@
+<html lang="en">
+    <head>
+        <title>Order Payment</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="d-flex justify-content-center align-items-center vh-100">
+
+            <div class="container">
+                
+                <h1 class="text-center">Payment App</h1>
+                <p class="mb-5 text-center">This is the Payment Mock App for the MockShop.</p>
+
+                {{ #error }}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {{ /error }}
+                
+                <div class="row text-start mb-3">
+                    <div class="col-5">
+                        <div class="small">Total</div>
+                        <div class="fw-bold">
+                            <span id="total">{{ amount }}</span>
+                            <span>{{ currency }}</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="small">Order</div>
+                        <div id="orderId">{{ orderId }}</div>
+                    </div>
+                </div>
+            
+                <form action="" method="post" class="text-start row g-3">
+                    <input type="hidden" name="sessionId" value="{{ sessionId }}" />
+                    <div class="col-12">
+                        <label class="form-label" for="cardNumber">Card Number</label>
+                        <input class="form-control" type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" />
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label" for="expiry">Expiry</label>
+                        <input class="form-control" type="text" id="expiry" name="expiry" placeholder="MM/YY" />
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label" for="cvc">CVC</label>
+                        <input class="form-control" type="text" id="cvc" name="cvc" placeholder="123" />
+                    </div>
+
+                    <hr class="border border-primary border-2 opacity-75">
+
+                    <div class="col-6 mt-0">
+                        <label class="form-label" for="delay">Payment Delay</label>
+                        <input class="form-control" type="text" id="delay" name="delay" placeholder="5000 [ms]" />
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" name="action" value="pay" class="btn btn-dark" aria-label="Pay">Pay</button>
+                    </div>
+                </form>
+
+                <button type="button" class="btn btn-secondary" onclick="fillValid()">Fill Valid</button>
+                
+            </div>
+        </div>
+    </body>
+
+    <style>
+        .container {
+            max-width: 400px;
+            padding: 2rem 2.5rem;
+            border-radius: 8px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+
+    <script>
+        function fillValid() {
+            document.getElementById('cardNumber').value = '4242 4242 4242 4242';
+            document.getElementById('expiry').value = '12/34';
+            document.getElementById('cvc').value = '123';
+        }
+    </script>
+</html>

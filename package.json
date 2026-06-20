@@ -1,0 +1,19 @@
+{
+  "type": "module",
+  "workspaces": [
+    "frontend"
+  ],
+  "dependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/mokapi": "^0.35.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "kafkajs": "^2.2.4"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.61.0",
+    "@types/node": "^25.9.3"
+  },
+  "scripts": {}
+}

@@ -1,0 +1,48 @@
+openapi: '3.1.0'
+info:
+  title: Simulation API
+  description: >
+    The simulation API is used by Playwright tests and developers to control
+    the mock environment. It allows configuring mock behavior without touching
+    the shop backend. For example, you can use it to simulate a delay in the payment processing
+  version: '1.0'
+servers:
+  - url: http://localhost:5002
+paths:
+  /simulate/payment-delay:
+    post:
+      summary: Configure a payment delay
+      description: >
+        Configures a delay before the payment app produces the Kafka message
+        for a given user. Use this to test the processing state in the frontend
+        before the payment confirmation arrives.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - orderId
+                - delayMs
+              properties:
+                orderId:
+                  type: string
+                delayMs:
+                  type: integer
+                  minimum: 0
+                  description: Delay in milliseconds before the Kafka message is produced
+                  example: 3000
+      responses:
+        '204':
+          description: Payment delay configured
+        '400':
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid request body

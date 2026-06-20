@@ -1,0 +1,56 @@
+openapi: '3.1.0'
+info:
+  title: Payment Provider API
+  description: >
+    Mocks the payment provider's server-side API. In production this would be
+    replaced by the real provider's API (e.g. Stripe, Adyen). The shop backend
+    calls this API to create a checkout session and receives a payment URL to
+    redirect the customer to.
+  version: '1.0'
+servers:
+  - url: http://localhost:5000
+paths:
+  /checkout/sessions:
+    post:
+      summary: Create a checkout session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - orderId
+                - amount
+                - currency
+                - successUrl
+              properties:
+                orderId:
+                  type: string
+                  example: order-abc123
+                amount:
+                  type: number
+                  description: Total amount to pay
+                  example: 129.97
+                currency:
+                  type: string
+                  example: USD
+                successUrl:
+                  type: string
+                  description: URL to redirect the customer to after successful payment
+                  example: http://localhost:3000/?page=confirmation&orderId=order-abc123
+      responses:
+        '201':
+          description: Checkout session created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sessionId:
+                    type: string
+                    example: mock-session-xyz789
+                  paymentUrl:
+                    type: string
+                    description: URL to redirect the customer to
+                    example: http://localhost:5001/payment?sessionId=mock-session-xyz789

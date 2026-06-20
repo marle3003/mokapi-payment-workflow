@@ -1,0 +1,36 @@
+services:
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        VITE_BACKEND_URL: http://localhost:3001
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+      - mock
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "3001:3000"
+    environment:
+      PAYMENT_BASE_URL: http://mock:5000
+      KAFKA_HOST: mock:9092
+    depends_on:
+      - mock
+
+  mock:
+    image: mokapi/mokapi:0.44.2-alpha
+    volumes:
+      - ./mock:/etc/mock:ro
+    ports:
+      - "5001:5001" # Payment App
+      - "5002:5002" # Simulation API
+      - "8080:8080" # Mokapi Dashboard
+    command: --providers-file-directory /etc/mock
+      

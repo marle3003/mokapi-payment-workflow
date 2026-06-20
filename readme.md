@@ -35,7 +35,7 @@ docker compose up
 Then run the Playwright tests:
 
 \`\`\`bash
-npx playwright test
+BASE_URL=http://localhost:3000 npx playwright test
 \`\`\`
 
 ## Read more

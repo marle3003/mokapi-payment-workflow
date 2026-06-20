@@ -1,0 +1,73 @@
+openapi: '3.1.0'
+info:
+  title: Payment App
+  description: >
+    The hosted payment page served to the customer's browser. The customer is
+    redirected here after the shop backend creates a checkout session. This page
+    collects card details, produces a Kafka message with the payment result, and
+    redirects the customer back to the shop.
+  version: '1.0'
+servers:
+  - url: http://localhost:5001
+paths:
+  /payment:
+    get:
+      summary: Show the payment form
+      parameters:
+        - name: sessionId
+          in: query
+          required: true
+          schema:
+            type: string
+          description: The session ID created by the payment provider API
+      responses:
+        '200':
+          description: Payment form
+          content:
+            text/html:
+              schema:
+                type: string
+        '400':
+          description: Invalid or expired session
+          content:
+            text/html:
+              schema:
+                type: string
+    post:
+      summary: Process the payment form submission
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - sessionId
+                - cardNumber
+                - expiry
+                - cvc
+              properties:
+                sessionId:
+                  type: string
+                cardNumber:
+                  type: string
+                  example: '4242 4242 4242 4242'
+                expiry:
+                  type: string
+                  example: '12/26'
+                cvc:
+                  type: string
+                  example: '123'
+      responses:
+        '302':
+          description: Redirect to successUrl after payment
+          headers:
+            location:
+              schema:
+                type: string
+        '200':
+          description: Payment form with error message if produce fails
+          content:
+            text/html:
+              schema:
+                type: string
