@@ -7,6 +7,8 @@ a Kafka message when the user submits the form. Playwright navigates the full ch
 flow just like a real user would, including the redirect to the payment page and the 
 async order status update.
 
+![Video about the payment workflow](mokapi-payment-workflow.gif "Payment Workflow")
+
 ## What's in here
 
 - A simple online shop with a frontend and backend

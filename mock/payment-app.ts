@@ -26,7 +26,7 @@ export default function() {
             const html = render(paymentPageTemplate, { sessionId, ...session, error: undefined })
             res.data = html
         } else if (req.method === 'POST') {
-            const { sessionId } = req.body
+            let { sessionId, delay } = req.body
             const session = sessions[sessionId]
 
             if (!session) {
@@ -49,13 +49,16 @@ export default function() {
                 ]
             }
 
-            if (simulations.payment[session.orderId]) {
-                const { delayMs } = simulations.payment[session.orderId]
+            if (!delay && simulations.payment[session.orderId]) {
+                delay = simulations.payment[session.orderId].delayMs
+            }
+
+            if (delay > 0) {
                 delete simulations.payment[session.orderId]
 
                 setTimeout(() => {
                     produce(kafkaProduceRequest)
-                }, delayMs)
+                }, delay)
             } else {
                 try {
                     produce(kafkaProduceRequest)
