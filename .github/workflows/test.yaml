@@ -22,7 +22,7 @@ jobs:
           docker compose up -d
 
       - name: Set Up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 26
 
@@ -35,7 +35,7 @@ jobs:
       - name: Run Tests
         run: BASE_URL=http://localhost:3000 npx playwright test
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: playwright-report
@@ -46,7 +46,7 @@ jobs:
         if: ${{ !cancelled() }}
         run: docker compose logs > /var/tmp/logs.txt 2>&1
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: docker-compose-logs
