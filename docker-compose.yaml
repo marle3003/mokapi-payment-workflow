@@ -25,7 +25,7 @@ services:
       - mock
 
   mock:
-    image: mokapi/mokapi:0.44.2-alpha
+    image: mokapi/mokapi:0.48.1-alpha
     volumes:
       - ./mock:/etc/mock:ro
     ports:
